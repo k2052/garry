@@ -14,7 +14,7 @@ module Garry
           customer = ::Stripe::Customer.create(c_hash)   
           
           account.stripe_id     = customer.id       
-          account.last_4_digits = customer.active_card.last4        
+          account.last_4_digits = customer.active_card.last4 if customer.active_card       
           
           account.save
         rescue ::Stripe::StripeError => e  

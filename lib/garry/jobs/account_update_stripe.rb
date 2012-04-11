@@ -9,7 +9,7 @@ module Garry
           updates.each do |k, v|   
             customer.send(k, v)
           end   
-          account.last_4_digits = customer.active_card.last4 if updates.include?(:card) 
+          account.last_4_digits = customer.active_card.last4 if updates.include?(:card) and customer.active_card 
           customer.save
         rescue ::Stripe::StripeError => e  
           ::Airbrake.notify(
