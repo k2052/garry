@@ -4,7 +4,8 @@ module Garry
   module Account   
     def self.included(klass)
       klass.class_eval do    
-        attr_accessor :password, :password_confirmation, :generate_password_later
+        attr_accessor :password, :password_confirmation, :generate_password_later, :stripe_token, :force_create_stripe
+          :stripe_updates
 
         key :first_name,       String  
         key :last_name,        String
@@ -12,7 +13,6 @@ module Garry
         key :email,            String
         key :crypted_password, String
         key :salt,             String
-        key :stripe_token,     String
         key :stripe_id,        String     
         key :role,             String
 
@@ -29,7 +29,8 @@ module Garry
         
         # Callbacks
         before_save :encrypt_password, :if => :password_required  
-        after_save :create_stripe     
+        after_save :create_stripe, :if => :create_stripe_required  
+        after_save :update_stripe, :if => :update_stripe_required  
 
         # Associations
         has_one :cart, :dependent => :destroy
@@ -46,16 +47,17 @@ module Garry
       self.last_name  = n[1] if n.length >= 1
     end
 
-    def create_stripe()   
-      unless self.stripe_id 
-        return Jobs::CreateStripe::perform(self.id) if Padrino.env == :development or Padrino.env == :test   
-        Resque.enqueue(Jobs::CreateStripe, self.id)      
-      end
+    def create_stripe()    
+      return Jobs::CreateStripe::perform(self.id, self.stripe_token) if Padrino.env == :development or Padrino.env == :test   
+      Resque.enqueue(Jobs::CreateStripe, self.id, self.stripe_token)      
     end   
 
-    def update_stripe(updates)     
-      return Jobs::UpdateStripe::perform(self.id, card) if Padrino.env == :development or Padrino.env == :test   
-      Resque.enqueue(Jobs::UpdateStripe, self.id, card)
+    def update_stripe(updates={})        
+      updates = @stripe_updates if updates.empty? and @stripe_updates
+      updates[:card] = @stripe_token if @stripe_token    
+          
+      return Jobs::UpdateStripe::perform(self.id, updates) if Padrino.env == :development or Padrino.env == :test   
+      Resque.enqueue(Jobs::UpdateStripe, self.id, updates)
     end  
 
     def encrypt_password
@@ -88,6 +90,15 @@ module Garry
     
     def subscribe(plan)     
       self.update_stripe({:plan => plan.name})
+    end 
+    
+    def create_stripe_required()
+      return true if @force_create_stripe or self.stripe_id.nil? 
+    end    
+    
+    def update_stripe_required()    
+      return false unless self.stripe_id
+      return true if @stripe_token or @stripe_updates
     end
   end  
 end     

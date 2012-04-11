@@ -1,13 +1,17 @@
 module Garry
   module Jobs
     class CreateStripe 
-      def self.perform(account_id)
+      def self.perform(account_id, stripe_token=nil)
         account = ::Account.find_by_id(account_id)  
-        begin 
-          customer = ::Stripe::Customer.create(
+        begin       
+          c_hash = {   
             :description => "Customer #{account.name} for site@demo",
             :email       => account.email
-          )   
+          }   
+          
+          c_hash[:card] = stripe_token if stripe_token 
+          
+          customer = ::Stripe::Customer.create(c_hash)   
           account.stripe_id = customer.id    
           account.save
         rescue ::Stripe::StripeError => e  
