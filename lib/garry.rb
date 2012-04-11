@@ -7,7 +7,7 @@ require 'mongomapper_ext'
 FileSet.glob_require('garry/*.rb', __FILE__)
 FileSet.glob_require('garry/{helpers,models,jobs}/*.rb', __FILE__)       
 
-if !defined?(Airbrake) or Padrin.env == :test or Padrino.env == :development
+if !defined?(Airbrake) or Padrino.env == :test or Padrino.env == :development
   module Airbrake
     def self.notify(thing)
       # do nothing.

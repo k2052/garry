@@ -14,8 +14,6 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.5.2}
   s.summary    = %q{An ecommerce framework powered by padrino, mongomapper & stripe}
   s.test_files = [
-    "test/garry_test.rb",
-    "test/teststrap.rb"
   ]
 
   if s.respond_to? :specification_version then
