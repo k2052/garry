@@ -14,7 +14,8 @@ module Garry
         key :crypted_password, String
         key :salt,             String
         key :stripe_id,        String     
-        key :role,             String
+        key :role,             String         
+        key :last_4_digits,    String
 
         # Validations
         validates_presence_of     :email 

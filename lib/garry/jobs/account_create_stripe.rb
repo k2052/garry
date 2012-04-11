@@ -12,7 +12,10 @@ module Garry
           c_hash[:card] = stripe_token if stripe_token 
           
           customer = ::Stripe::Customer.create(c_hash)   
-          account.stripe_id = customer.id    
+          
+          account.stripe_id     = customer.id       
+          account.last_4_digits = customer.active_card.last4        
+          
           account.save
         rescue ::Stripe::StripeError => e  
           ::Airbrake.notify(
