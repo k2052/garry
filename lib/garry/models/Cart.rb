@@ -49,7 +49,7 @@ module Garry
   
     def items_full()    
       product_ids = self.items.map { |i| i.product_id }   
-      Product.all(:id => product_ids)
+      GarryProduct.all(:id => product_ids)
     end
   end 
 end

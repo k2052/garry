@@ -1,6 +1,6 @@
-class Product      
+class GarryProduct      
   include MongoMapper::Document 
-  # include MongoMapperExt::Slugizer     
+  include MongoMapperExt::Slugizer     
 
   key :price,         Integer
   key :title,         String
@@ -9,7 +9,7 @@ class Product
 
   validates_presence_of :title  
 
-  # slug_key :title, :unique => true  
+  slug_key :title, :unique => true  
   has_many :adjustments  
 
   def price_dollars() 
