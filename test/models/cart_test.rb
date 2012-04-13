@@ -32,9 +32,10 @@ describe "Cart Model" do
       cart = @account.cart     
       cart.add(p)       
       cart.save  
-
-      assert cart.items.count > 0 
-      
+      assert cart.items.count > 0  
+      assert cart.items_full.count > 0        
+      assert GProduct.find_by_id(p.id).id == p.id
+            
       cart.checkout       
       cart = Cart.find_by_id(cart.id)
       wont_be_nil cart.charge_id     

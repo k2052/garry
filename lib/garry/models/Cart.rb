@@ -46,10 +46,11 @@ module Garry
       @total = totals.inject(:+)  
       return @total
     end
-  
+    
+    # Its probably best to overide this so you get correct objects. Instead of GProduct's
     def items_full()    
       product_ids = self.items.map { |i| i.product_id }   
-      GarryProduct.all(:id => product_ids)
+      GProduct.all(:id => product_ids)
     end
   end 
 end
