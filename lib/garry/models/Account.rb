@@ -15,7 +15,7 @@ module Garry
         key :salt,             String
         key :stripe_id,        String     
         key :role,             String         
-        key :last_4_digits,    String    
+        key :last_4_digits,    Integer   
         key :purchased_type,   String
         key :purchased_ids,    Array
 
