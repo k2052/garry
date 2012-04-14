@@ -9,7 +9,8 @@ module Garry
         key :charge_id,     String   
         key :charge_amount, Integer
 
-        validates_presence_of :title  
+        validates_presence_of :title     
+        validates_presence_of :price
 
         slug_key :title, :unique => true  
         has_many :adjustments
