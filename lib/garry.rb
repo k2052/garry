@@ -11,6 +11,12 @@ unless defined?(Airbrake) and Padrino.env == :production
   module Airbrake
     def self.notify(thing)
       # do nothing.
+    end   
+    
+    class Sender    
+      def send_to_airbrake(data)     
+        # do nothing
+      end
     end
   end            
 end
