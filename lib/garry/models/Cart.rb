@@ -48,9 +48,9 @@ module Garry
     end
     
     # Its probably best to overide this so you get correct objects. Instead of GProduct's
-    def items_full()    
+    def items_full(query={})    
       product_ids = self.items.map { |i| i.product_id }   
-      GProduct.all(:id => product_ids)
+      GProduct.all({:id => product_ids}.merge!(query))
     end
   end 
 end

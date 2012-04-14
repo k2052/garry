@@ -101,9 +101,9 @@ module Garry
       self[:purchased_type] = object.class
     end    
     
-    def purchased()  
+    def purchased(query={})  
       purchased_type = Kernel.const_get(self.purchased_type)
-      purchased_type.all(:id => self.purchased_ids)       
+      purchased_type.all({:id => self.purchased_ids}.merge!(query))       
     end
     
     def create_stripe_required()
