@@ -91,7 +91,11 @@ module Garry
     
     def subscribe(plan)     
       self.update_stripe({:plan => plan.name})
-    end 
+    end  
+    
+    def purchase(object)   
+      object.purchase(self)
+    end
     
     def create_stripe_required()
       return true if @force_create_stripe or self.stripe_id.nil? 
