@@ -15,7 +15,9 @@ module Garry
         key :salt,             String
         key :stripe_id,        String     
         key :role,             String         
-        key :last_4_digits,    String
+        key :last_4_digits,    String    
+        key :purchased_type,   String
+        key :purchased_ids,    Array
 
         # Validations
         validates_presence_of     :email 
@@ -94,7 +96,14 @@ module Garry
     end  
     
     def purchase(object)   
-      object.purchase(self)
+      object.purchase(self)    
+      self[:purchased_ids] << object.id       
+      self[:purchased_type] = object.class
+    end    
+    
+    def purchased()  
+      purchased_type = Kernel.const_get(self.purchased_type)
+      purchased_type.all(:id => self.purchased_ids)       
     end
     
     def create_stripe_required()
