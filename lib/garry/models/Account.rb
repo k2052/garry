@@ -4,6 +4,8 @@ module Garry
   module Account   
     def self.included(klass)
       klass.class_eval do    
+        extend ClassMethods
+        
         attr_accessor :password, :password_confirmation, :generate_password_later, :stripe_token, :force_create_stripe
           :stripe_updates
 
@@ -14,7 +16,8 @@ module Garry
         key :crypted_password, String
         key :salt,             String
         key :stripe_id,        String     
-        key :role,             String         
+        key :role,             String, :default => :registered   
+        key :roles,            Array,  :default => ['registered']     
         key :last_4_digits,    Integer   
         key :purchased_type,   String
         key :purchased_ids,    Array
@@ -28,7 +31,8 @@ module Garry
         validates_length_of       :email,    :within => 3..100
         validates_uniqueness_of   :email,    :case_sensitive => false
         validates_format_of       :email,    :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i      
-        validates_uniqueness_of   :username
+        validates_uniqueness_of   :username     
+        validates_format_of       :role,  :with => /[A-Za-z]/
         
         # Callbacks
         before_save :encrypt_password, :if => :password_required  
@@ -38,7 +42,14 @@ module Garry
         # Associations
         has_one :cart, :dependent => :destroy if defined?(::Cart)       
       end
-    end  
+    end 
+    
+    module ClassMethods   
+      def authenticate(email, password)
+        account = first(:email => email) if email.present?
+        account && account.has_password?(password) ? account : nil
+      end
+    end 
     
     def name()  
       return "#{self.first_name}, #{self.last_name}" unless self.first_name.nil? 
@@ -50,7 +61,12 @@ module Garry
       self.first_name = n[0] if n.length > 0
       self.last_name  = n[1] if n.length >= 1
     end
-
+        
+    def role=(role) 
+      self[:role] = role     
+      self[:roles] << role
+    end  
+    
     def create_stripe()    
       return Jobs::CreateStripe::perform(self.id, self.stripe_token) if Padrino.env == :development or Padrino.env == :test   
       Resque.enqueue(Jobs::CreateStripe, self.id, self.stripe_token)      
@@ -85,12 +101,7 @@ module Garry
       self.password_confirmation = newpass
       self.encrypt_password     
       return newpass
-    end
-
-    def self.authenticate(email, password)
-      account = first(:email => email) if email.present?
-      account && account.has_password?(password) ? account : nil
-    end   
+    end  
     
     def subscribe(plan)     
       self.update_stripe({:plan => plan.name})
@@ -116,4 +127,4 @@ module Garry
       return true if @stripe_token or @stripe_updates
     end
   end  
-end     
+end
