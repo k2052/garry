@@ -42,7 +42,7 @@ module Garry
     
     def name()  
       return "#{self.first_name}, #{self.last_name}" unless self.first_name.nil? 
-      return "First Name, Last Name"
+      return ""
     end
 
     def name=(n) 
