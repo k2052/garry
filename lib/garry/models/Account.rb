@@ -41,7 +41,8 @@ module Garry
     end  
     
     def name()  
-      return "#{self[:first_name]}, #{self[:last_name]}"
+      return "#{self.first_name}, #{self.last_name}" unless self.first_name.empty?  
+      return "First Name, Last Name"
     end
 
     def name=(n) 
