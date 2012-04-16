@@ -49,8 +49,8 @@ module Garry
     def purchase(account) 
       return true if self.charge_id
 
-      return ::Garry::Jobs::ProductPurchase::perform(self.id, account.id) if Padrino.env == :development or Padrino.env == :test   
-      Resque.enqueue(::Garry::Jobs::ProductPurchase, self.id, account.id)
+      return ::Garry::Jobs::ProductPurchase::perform(self.id, account.id, self.class.to_s) if Padrino.env == :development or Padrino.env == :test   
+      Resque.enqueue(::Garry::Jobs::ProductPurchase, self.id, account.id, self.class.to_s)
     end  
 
     # This is for users of Garry to implement themselves

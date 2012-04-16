@@ -108,8 +108,6 @@ module Garry
     end  
     
     def purchase(object)      
-      self.purchased_type = object.class  
-      self.save
       object.purchase(self)        
     end    
     
