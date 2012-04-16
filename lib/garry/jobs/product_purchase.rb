@@ -2,7 +2,7 @@ module Garry
   module Jobs
     class ProductPurchase   
       def self.perform(product_id, account_id)     
-        product = ::Product.find_by_id(product_id)
+        product = ::GProduct.find_by_id(product_id)
         account = ::Account.find_by_id(account_id)      
               
         begin                     
