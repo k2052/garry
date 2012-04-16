@@ -23,8 +23,8 @@ module Garry
           }
         
           if product.save
-            account.purchased_ids << object.id       
-            account.purchased_type = object.class
+            account.purchased_ids << product.id       
+            account.purchased_type = product.class
             if account.save      
               return product.after_purchase(account)             
             else
