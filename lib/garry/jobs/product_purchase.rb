@@ -2,7 +2,8 @@ module Garry
   module Jobs
     class ProductPurchase   
       def self.perform(product_id, account_id)     
-        product = ::GProduct.find_by_id(product_id)
+        purchased_type = Kernel.const_get(self.purchased_type)
+        product = purchased_type.find_by_id(product_id)
         account = ::Account.find_by_id(account_id)      
               
         begin                     
@@ -24,7 +25,6 @@ module Garry
         
           if product.save
             account.purchased_ids << product.id       
-            account.purchased_type = product.class
             if account.save      
               return product.after_purchase(account)             
             else

@@ -107,7 +107,9 @@ module Garry
       self.update_stripe({:plan => plan.name})
     end  
     
-    def purchase(object)   
+    def purchase(object)      
+      self.purchased_type = object.class  
+      self.save
       object.purchase(self)        
     end    
     
