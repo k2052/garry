@@ -14,16 +14,27 @@ module Garry
           )  
 
           product.charge_id     = charge.id  
-          product.charge_amount = charge.amount   
+          product.charge_amount = charge.amount     
+          
+          account.purchased_ids << object.id       
+          account.purchased_type = object.class      
+          
+          failure = {
+            :error_class   => :purchase,
+            :error_message => "Failed to purchase #{product.title} for #{account.name}: #{product.errors.full_messages}",
+            :parameters    => {:account => account.name, :product_id => product.id}
+          }
         
           if product.save
-            return product.after_purchase(account)   
+            account.purchased_ids << object.id       
+            account.purchased_type = object.class
+            if account.save      
+              return product.after_purchase(account)             
+            else
+              ::Airbrake.notify(failure)
+            end
           else    
-            ::Airbrake.notify(
-              :error_class   => :purchase,
-              :error_message => "Failed to purchase #{product.title} for #{account.name}: #{product.errors.full_messages}",
-              :parameters    => {:account => account.name, :product_id => product.id}
-            )
+            ::Airbrake.notify(failure)
           end
         rescue ::Stripe::StripeError => e       
           ::Airbrake.notify(

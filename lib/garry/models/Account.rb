@@ -108,9 +108,7 @@ module Garry
     end  
     
     def purchase(object)   
-      object.purchase(self)    
-      self[:purchased_ids] << object.id       
-      self[:purchased_type] = object.class
+      object.purchase(self)        
     end    
     
     def purchased(query={})  
