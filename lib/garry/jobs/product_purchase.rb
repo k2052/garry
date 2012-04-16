@@ -24,8 +24,8 @@ module Garry
           }
         
           if product.save
-            account.purchased_ids << product.id       
-            if account.save      
+            account.purchased_ids << product.id.to_s 
+            if account.save   
               return product.after_purchase(account)             
             else
               ::Airbrake.notify(failure)
