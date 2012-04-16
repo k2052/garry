@@ -2,9 +2,9 @@ module Garry
   module Jobs
     class ProductPurchase   
       def self.perform(product_id, account_id)     
-        purchased_type = Kernel.const_get(self.purchased_type)
-        product = purchased_type.find_by_id(product_id)
         account = ::Account.find_by_id(account_id)      
+        purchased_type = Kernel.const_get(account.purchased_type)
+        product = purchased_type.find_by_id(product_id)
               
         begin                     
           charge = ::Stripe::Charge.create(
