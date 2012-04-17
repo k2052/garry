@@ -40,7 +40,7 @@ module Garry
         after_save :update_stripe, :if => :update_stripe_required  
 
         # Associations
-        has_one :cart, :dependent => :destroy if defined?(::Cart)       
+        has_one :cart, :dependent => :destroy if defined?(Cart)       
       end
     end 
     

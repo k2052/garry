@@ -11,7 +11,7 @@ unless defined?(Airbrake) and Padrino.env == :production
   module Airbrake
     def self.notify(*args)
       hash = args.extract_options!
-      puts hash[:error_message]
+      puts hash[:error_message] if Padrino.env == :development or Padrino.env == :test
     end   
     
     class Sender    

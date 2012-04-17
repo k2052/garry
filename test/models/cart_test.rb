@@ -3,7 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_config.rb')
 describe "Cart Model" do       
   context "cart" do  
     setup do      
-      @account_c = Account.first(:last_4_digits.ne => nil, :cart_id => nil)         
+      @account_c = Account.first(:last_4_digits.ne => nil, :cart_id => nil)       
+      assert @account_c  
       cart = Cart.new(:account_id => @account_c.id)  
       cart.save
       assert cart.errors.size == 0  

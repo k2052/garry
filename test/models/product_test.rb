@@ -6,7 +6,7 @@ describe "Product Model" do
     @product2 = Product.new(:price => 5005, :title => Faker::Name.name)  
     @product.save
     @product2.save
-    @account_p = Account.first(:last_4_digits.ne => nil,
+    @account_p = Account.first(:last_4_digits.ne => nil)
   end
   
   should "create a new product model instance" do      
