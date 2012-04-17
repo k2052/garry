@@ -2,6 +2,13 @@ require 'ffaker'
 
 shell.say "Create some accounts. 10 to be exact"
 
+unless defined?(Account)       
+  class Account
+    include MongoMapper::Document
+    include Garry::Account
+  end
+end
+
 10.times do |i|    
   account = Account.new(:email => Faker::Internet.email, :username => Faker::Internet.user_name, :name => Faker::Name.name, :password => 'testpass', 
     :password_confirmation => 'testpass')    
