@@ -9,8 +9,9 @@ FileSet.glob_require('garry/{helpers,models,jobs}/*.rb', __FILE__)
 
 unless defined?(Airbrake) and Padrino.env == :production
   module Airbrake
-    def self.notify(thing)
-      # do nothing.
+    def self.notify(*args)
+      hash = args.extract_options!
+      puts hash[:error_message]
     end   
     
     class Sender    
