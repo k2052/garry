@@ -107,8 +107,14 @@ module Garry
       self.update_stripe({:plan => plan.name})
     end  
     
-    def purchase(object)      
+    def purchase(object)  
+      return true if self.purchased_ids.include?(object.id.to_s) 
       object.purchase(self)        
+    end
+    
+    def purchased?(object) 
+      return true if self.purchased_ids.include?(object.id.to_s)   
+      return false 
     end    
     
     def purchased(query={})  
