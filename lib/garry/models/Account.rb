@@ -113,8 +113,11 @@ module Garry
     end
     
     def purchased?(object) 
-      return true if self.purchased_ids.include?(object.id.to_s)   
-      return false 
+      if object.is_a?(String)
+       return self.purchased_ids.include?(object)    
+      else
+        return self.purchased_ids.include?(object.id.to_s)    
+      end  
     end    
     
     def purchased(query={})  
