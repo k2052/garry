@@ -15,7 +15,7 @@ gem 'mongomapper_ext', :git => "git://github.com/bookworm/mongomapper_ext.git", 
 gem 'minitest', "~>2.6.0", :require => "minitest/autorun", :group => "test"          
 gem 'mini_shoulda', :require => 'mini_shoulda', :group => "test"    
 gem 'rack-test', :require => "rack/test", :group => "test"    
-gem 'faker', :require => "faker", :group => "test"
+gem 'ffaker', :require => "ffaker", :group => "test"
 
 gem "padrino"
 gem "padrino-core"
