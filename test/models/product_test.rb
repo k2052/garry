@@ -34,5 +34,5 @@ describe "Product Model" do
     assert @product2.charge_amount == 8081    
     
     @product2.destroy
-  end             
+  end  
 end
