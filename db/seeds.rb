@@ -8,7 +8,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test/mock_models/Product.
 require 'stripe'
 Stripe.api_key = ENV['STRIPE_KEY']
 
-shell.say "Create some accounts. 3 to be exact"
+shell.say "Creating some accounts. 3 to be exact"
 
 3.times do |i|    
   account = Account.new(:email => Faker::Internet.email, :username => Faker::Internet.user_name, :name => Faker::Name.name, :password => 'testpass', 
@@ -24,8 +24,18 @@ shell.say "Create some accounts. 3 to be exact"
   account.update_stripe(:card => card)
 end  
 
-shell.say "Create some products. 10 to be exact"
-10.times do |i|   
+shell.say "Creating some products. 10 to be exact"
+5.times do |i|   
   product = Product.new(:price => 5005, :title => Faker::Name.name) 
   product.save
+end 
+ 
+shell.say "Purchasing a few products."
+                       
+account = Account.no_purchases.first
+
+products = Product.all(:limit => 5)
+
+products.each do |product|  
+  account.purchase(product)
 end
