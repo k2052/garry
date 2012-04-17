@@ -7,8 +7,12 @@ module Garry
         extend ClassMethods
         
         attr_accessor :password, :password_confirmation, :generate_password_later, :stripe_token, :force_create_stripe
-          :stripe_updates
+          :stripe_updates    
+        
+        scope :no_purchases,  where(:purchased_ids => {'$size' => 0 } )       
+        scope :purchased,     where(:purchased_ids => {'$not' => { '$size' => 0 } })  
 
+        # Keys
         key :first_name,       String  
         key :last_name,        String
         key :username,         String     
@@ -40,7 +44,7 @@ module Garry
         after_save :update_stripe, :if => :update_stripe_required  
 
         # Associations
-        has_one :cart, :dependent => :destroy if defined?(::Cart)       
+        has_one :cart, :dependent => :destroy if defined?(Cart)       
       end
     end 
     
@@ -120,7 +124,7 @@ module Garry
       end  
     end    
     
-    def purchased(query={})  
+    def purchases(query={})  
       purchased_type = Kernel.const_get(self.purchased_type)
       purchased_type.all({:id => self.purchased_ids}.merge!(query))       
     end
