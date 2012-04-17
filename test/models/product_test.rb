@@ -6,18 +6,7 @@ describe "Product Model" do
     @product2 = Product.new(:price => 5005, :title => Faker::Name.name)  
     @product.save
     @product2.save
-    @account  = Account.new(:email => Faker::Internet.email, :username => Faker::Internet.user_name, :name => Faker::Name.name, :password => 'samy', 
-      :password_confirmation => 'samy') 
-    @account.save                             
-    @account = Account.first(:id => @account.id)  
-    cu = Stripe::Customer.retrieve(@account.stripe_id)   
-    card = {
-      :number    => 4242424242424242,
-      :exp_month => 8,
-      :exp_year  => 2013
-    } 
-    cu.card = card
-    cu.save
+    @account_p = Account.first(:last_4_digits.ne => nil,
   end
   
   should "create a new product model instance" do      
@@ -26,7 +15,7 @@ describe "Product Model" do
   end            
   
   should "should purchase a product" do    
-    @product.purchase(@account)  
+    @product.purchase(@account_p)  
     @product = Product.find_by_id(@product.id)
     wont_be_nil @product.charge_id   
            
@@ -40,7 +29,7 @@ describe "Product Model" do
     @product2.save
         
     assert @product2.total == 8081  
-    @product2.purchase(@account) 
+    @product2.purchase(@account_p) 
     @product2 = Product.find_by_id(@product2.id)      
     assert @product2.charge_amount == 8081    
     
