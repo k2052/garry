@@ -21,7 +21,15 @@ shell.say "Creating some accounts. 3 to be exact"
     :exp_month => 8,
     :exp_year  => 2013
   } 
-  account.update_stripe(:card => card)
+  account.update_stripe(:card => card)      
+  
+  account = Account.find_by_id(account.id)  
+end 
+
+1.times do |i|        
+  account = Account.new(:email => Faker::Internet.email, :username => Faker::Internet.user_name, :name => Faker::Name.name, :password => 'testpass', 
+    :password_confirmation => 'testpass')    
+  account.save
 end  
 
 shell.say "Creating some products. 10 to be exact"
@@ -32,7 +40,7 @@ end
  
 shell.say "Purchasing a few products."
                        
-account = Account.no_purchases.first
+account = Account.no_purchases.first(:last_4_digits.ne => nil)
 
 products = Product.all(:limit => 5)
 

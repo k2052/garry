@@ -64,7 +64,7 @@ module Garry
       n = n.split(",").join(" ").split(" ").uniq      
       self.first_name = n[0] if n.length > 0
       self.last_name  = n[1] if n.length >= 1
-    end
+    end  
         
     def role=(role) 
       self[:role] = role     
