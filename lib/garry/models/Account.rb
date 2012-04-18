@@ -118,7 +118,7 @@ module Garry
     
     def purchased?(object) 
       if object.is_a?(String)
-       return self.purchased_ids.include?(object)    
+        return self.purchased_ids.include?(object)    
       else
         return self.purchased_ids.include?(object.id.to_s)    
       end  

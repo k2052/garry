@@ -13,10 +13,7 @@ module Garry
             :customer    => account.stripe_id,
             :description => "Charge for #{account.email}"
           )  
-
-          product.charge_id     = charge.id  
-          product.charge_amount = charge.amount     
-          
+ 
           failure = {
             :error_class   => :purchase,
             :error_message => "Failed to purchase #{product.title} for #{account.name}: #{product.errors.full_messages}",
