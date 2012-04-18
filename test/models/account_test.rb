@@ -48,10 +48,12 @@ describe "Account Model" do
     account = Account.purchased.first      
     assert account.purchases.count > 0
   end
-  
+   
+  # TODO Look into mongomapper issue with :id.ne queries
+  # https://github.com/jnunemaker/mongomapper/issues/125
   should 'return products that are not purchased' do  
     account  = Account.purchased.first         
-    products = Product.all(:id.ne => account.purchased_ids)
+    products = Product.all(:_id.ne => account.purchased_ids)
     assert account.purchased?(products.first) == false
   end
 end   
