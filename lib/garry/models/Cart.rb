@@ -5,7 +5,8 @@ module Garry
         key :account_id,    ObjectId
         key :session_id,    String
         key :charge_id,     String   
-        key :charge_amount, Float
+        key :charge_amount, Float     
+        key :item_ids,      Array
 
         belongs_to :account     
 
