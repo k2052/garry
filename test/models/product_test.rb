@@ -9,9 +9,10 @@ describe "Product Model" do
     @account_p = Account.no_purchases.first(:last_4_digits.ne => nil)
   end
   
-  should "create a new product model instance" do      
-    @product.save
-    assert @product.errors.size == 0
+  should "create a new product model instance" do        
+    product = Product.new(:title => Faker::Name.name, :desc => Faker::Lorem.paragraphs(2).join(" "), :price => 5005)   
+    product.save
+    assert product.errors.size == 0
   end            
   
   should "should purchase a product" do    
