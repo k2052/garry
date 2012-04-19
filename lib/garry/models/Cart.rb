@@ -41,11 +41,7 @@ module Garry
     end  
   
     def in_cart?(object)    
-      self.items.each do |item|      
-        return true if item.product_id == object.id 
-      end
-    
-      return false
+      return self.item_in_cart?(object)
     end
   
     def total()    
