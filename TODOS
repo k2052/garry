@@ -1,1 +1,2 @@
-- Add a Charge object. Although not 100% necessary (the charge date is obviously stored on stripe) it would be nice to be able to tell a user when they placed their order.
+- Add a Charge object. Although not 100% necessary (the charge date is obviously stored on stripe) it would be nice to be able to tell a user when they placed their order.    
+- Should be able retrieve the things an account has subscribed to.
