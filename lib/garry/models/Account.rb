@@ -107,8 +107,12 @@ module Garry
       return newpass
     end  
     
-    def subscribe(plan)     
-      self.update_stripe({:plan => plan.name})
+    def subscribe(plan)  
+      if plan.is_a?(Plan)   
+        self.update_stripe({:plan => plan.name})     
+      elsif plan.is_a?(String)      
+        self.update_stripe({:plan => plan})     
+      end  
     end  
     
     def purchase(object)  
