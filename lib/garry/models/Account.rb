@@ -24,7 +24,9 @@ module Garry
         key :roles,            Array,  :default => ['registered']     
         key :last_4_digits,    Integer   
         key :purchased_type,   String
-        key :purchased_ids,    Array
+        key :purchased_ids,    Array  
+        key :plan_id,          ObjectId if defined?(Plan)  
+        key :plan_ids,         Array    if defined?(Plan)
 
         # Validations
         validates_presence_of     :email 
@@ -44,7 +46,8 @@ module Garry
         after_save :update_stripe, :if => :update_stripe_required  
 
         # Associations
-        has_one :cart, :dependent => :destroy if defined?(::Cart)       
+        has_one :cart, :dependent => :destroy if defined?(::Cart)    
+        many :plans, :in => :plan_ids if defined?(Plan)   
       end
     end 
     
@@ -114,6 +117,10 @@ module Garry
         self.update_stripe({:plan => plan})     
       end  
     end  
+    
+    def plan()   
+      Plan.find_by_id(self.plan_id)
+    end
     
     def purchase(object)  
       return true if self.purchased_ids.include?(object.id.to_s) 

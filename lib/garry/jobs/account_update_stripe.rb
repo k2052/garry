@@ -12,8 +12,16 @@ module Garry
           updates.each do |k, v| 
             customer.send("#{k}=", v)       
           end   
-          customer.save   
-          account.last_4_digits = customer.active_card.last4 if updates.include?(:card) and customer.active_card 
+          customer.save      
+          
+          account.last_4_digits = customer.active_card.last4 if updates.include?(:card) and customer.active_card      
+          
+          if updates.include?(:plan)  
+            plan = Plan.find_by_id(updates[:plan])
+            account.plan_id = plan.id
+            account.plan_ids << plan.id 
+          end   
+          
           account.save
         rescue ::Stripe::StripeError => e  
           ::Airbrake.notify(
