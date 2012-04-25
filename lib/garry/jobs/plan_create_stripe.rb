@@ -12,7 +12,7 @@ module Garry
             :currency => plan.currency,
             :id       => plan.name
           )
-          plan.stripe_id = p.stripe_id
+          plan.stripe_id = p.id
           plan.save 
         rescue ::Stripe::StripeError => e  
           ::Airbrake.notify(
