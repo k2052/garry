@@ -17,7 +17,7 @@ module Garry
           account.last_4_digits = customer.active_card.last4 if updates.include?(:card) and customer.active_card      
           
           if updates.include?(:plan)  
-            plan = Plan.find_by_id(updates[:plan])
+            plan = ::Plan.find_by_id(updates[:plan])
             account.plan_id = plan.id
             account.plan_ids << plan.id 
           end   

@@ -119,7 +119,7 @@ module Garry
     end  
     
     def plan()   
-      Plan.find_by_id(self.plan_id)
+      ::Plan.find_by_id(self.plan_id)
     end
     
     def purchase(object)  
