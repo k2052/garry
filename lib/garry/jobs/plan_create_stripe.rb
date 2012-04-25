@@ -2,7 +2,7 @@ module Garry
   module Jobs  
     class PlanCreateStripe    
       def self.perform(plan_id)      
-        plan = ::Garry::Plan.find_by_id(plan_id)
+        plan = Plan.find_by_id(plan_id)
         
         begin  
           p = ::Stripe::Plan.create(
