@@ -11,7 +11,7 @@ module Garry
         
         scope :no_purchases,  where(:purchased_ids => {'$size' => 0 } )       
         scope :purchased,     where(:purchased_ids => {'$not' => { '$size' => 0 } })           
-        scope :card,          where(:last_4_digits => {'$not' => nil})
+        scope :card,          where(:last_4_digits.ne => nil)
 
         # Keys
         key :first_name,       String  
