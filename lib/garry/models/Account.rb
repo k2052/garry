@@ -10,7 +10,8 @@ module Garry
           :stripe_updates    
         
         scope :no_purchases,  where(:purchased_ids => {'$size' => 0 } )       
-        scope :purchased,     where(:purchased_ids => {'$not' => { '$size' => 0 } })  
+        scope :purchased,     where(:purchased_ids => {'$not' => { '$size' => 0 } })           
+        scope :card,          where(:last_4_digits => {'$not' => nil})
 
         # Keys
         key :first_name,       String  
@@ -110,7 +111,12 @@ module Garry
       return newpass
     end  
     
-    def subscribe(plan)  
+    def subscribe(plan)
+      if !self.last_4_digits        
+        self.errors.add :stripe, "Has no card cannot subscribe"
+        return false  
+      end
+      
       if plan.is_a?(Plan)   
         self.update_stripe({:plan => plan.name})     
       elsif plan.is_a?(String)      
