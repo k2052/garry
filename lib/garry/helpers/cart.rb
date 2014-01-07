@@ -1,6 +1,6 @@
 module Garry
   module CartHelpers 
-    def current_cart() 
+    def current_cart
       if current_account 
         return current_account.cart 
       else       
